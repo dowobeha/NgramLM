@@ -12,4 +12,9 @@ public struct WeightedCorpus {
 public struct WeightedLine {
     public let line: Line
     public let weight: Weight
+    
+    public init(line: Line, weight: Weight) {
+        self.line = line
+        self.weight = weight
+    }
 }
