@@ -5,17 +5,15 @@ public struct Counts {
     let tokenize: Tokenize
     let maxOrder: NgramOrder
     
-    public init<Corpus: Sequence>(from corpus: Corpus,
-                                  ngramOrder: NgramOrder,
-                                  tokenize: Tokenize,
-                                  weight: (Line, Ngram) -> Weight = {(_,_) in return 1.0}
-                                 ) where Corpus.Element==Line {
+    public init(from corpus: WeightedCorpus,
+                ngramOrder: NgramOrder,
+                tokenize: Tokenize) {
         
         var orderDictionary = OrderDictionary()
         
-        for line: Line in corpus {
+        for weightedLine in corpus.weightedLines {
             
-            let tokens: Tokens = tokenize(line, addTags: true)
+            let tokens: Tokens = tokenize(weightedLine.line, addTags: true)
             
             var contextLength = ngramOrder - 1
             
@@ -32,7 +30,7 @@ public struct Counts {
                     var contextDictionary = orderDictionary[order, default: ContextDictionary()]
                     var tokenDictionary = contextDictionary[context, default: TokenDictionary()]
                     let previousWeight = tokenDictionary[token, default: Weight(0.0)]
-                    let updatedWeight = previousWeight + weight(line, Ngram(tokens[start...end]))
+                    let updatedWeight = previousWeight + weightedLine.weight
                     
                     tokenDictionary.updateValue(updatedWeight, forKey: token)
                     contextDictionary.updateValue(tokenDictionary, forKey: context)
