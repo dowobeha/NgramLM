@@ -9,7 +9,6 @@ public struct NgramLM {
     public func callAsFunction(_ line: Line, addTags: Bool) -> Weight {
         
         let tokens: Tokens = self.counts.tokenize(line, addTags: addTags)
-        print(tokens)
         let ngramOrder: NgramOrder = self.counts.maxOrder
         
         if tokens.count >= 1 {
