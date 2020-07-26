@@ -3,10 +3,10 @@ import XCTest
 
 final class NgramLMTests: XCTestCase {
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(NgramLM().text, "Hello, World!")
+        let counts = Counts(from: ["a b c", "a c b"], ngramOrder: 2, tokenize: SplitOnSpace())
+        let lm = NgramLM(counts)
+        let p = lm("<s> a c b c", addTags: false)
+        print(p)
     }
 
     static var allTests = [
