@@ -11,7 +11,7 @@ public struct Counts {
         
         var orderDictionary = OrderDictionary()
         
-        for weightedLine in corpus.weightedLines {
+        for weightedLine in Progress(corpus.weightedLines) {
             
             let tokens: Tokens = tokenize(weightedLine.line, addTags: true)
             
