@@ -18,9 +18,13 @@ public struct NgramLM {
                 let end = min(tokens.count, start + ngramOrder)
                 let ngram: Ngram = Ngram(tokens[start..<end])
                 let numerator = self.counts(ngram)
-                let denominator = self.counts.sumOverContext(NgramContext(tokens[start..<end-1]))
-                let ngramProbability = numerator / denominator
-                result *= ngramProbability
+                if numerator == Weight(0.0) {
+                    return Weight(0.0)
+                } else {
+                    let denominator = self.counts.sumOverContext(NgramContext(tokens[start..<end-1]))
+                    let ngramProbability = numerator / denominator
+                    result *= ngramProbability
+                }
             }
             
             return result
